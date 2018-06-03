@@ -42,7 +42,7 @@ This setup is quite straight forward. Just follow the instructions from [the off
 ## Front-end Screenshots
 | Main Sreen                    | Login Screen                 |
 | ------------------------------|------------------------------|
-| ![](concept_design/Main.png)  | ![](concept_design/Main.png) |
+| ![](concept_design/Main.png)  | ![](concept_design/Login.png) |
 
 ## Credits
 
