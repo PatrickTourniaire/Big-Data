@@ -1,0 +1,55 @@
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+main {
+  max-width: 700px;
+  text-align: center;
+  align-self: center;
+  display: flex;
+}
+
+#logo {
+  max-width: 300px;
+  text-align: center
+}
+
+#header-desc {
+  color: #8a8d8f;
+  max-width: 400px;
+  margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+.btn-outline-primary {
+  margin: 20px 0;
+}
+
+form {
+  max-width: 300px;
+  position: relative;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.google-form {
+  margin-bottom: 30px;
+}
+
+.email-form {
+  margin-top: 30px;
+}
+
+.email-form > button {
+  margin-top: 20px;
+}
+
+.sep-line {
+  width: 400px;
+  height: 1px;
+  background: #ced4da;
+}

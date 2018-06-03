@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Big Data - File Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Local Styles -->
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/files.css"/>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Liberaries -->
+    <script src="node_modules/feather-icons/dist/feather.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script src="js/firebase/init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+    <link rel href="node_modules/viewerjs/dist/viewer.css" type="text/css" rel="stylesheet"/>
+    <script src="node_modules/viewerjs/dist/viewer.js"></script>
+
+    <script src="js/parsing/clean-filename.js"></script>
+    <script src="js/parsing/get-filetype.js"></script>
+    <script src="js/parsing/clean-date.js"></script>
+  </head>
+  <body>
+
+    <script id="report-template" type="text/template">
+      <div class="file {{key}}">
+        <div class="overhead">
+          <div class="contentFile">
+            <button id="extendReport">
+              <i class="extendReport" data-feather="chevron-down"></i>
+            </button>
+            <div class="file-info">
+              <p id="file-name" class="header-strong">{{name}}</p>
+              <p id="file-date" class="header-blass">Uploaded {{date}}</p>
+              <p id="file-operation">Report</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="removeImgFile">
+              <i class="remove" data-feather="trash-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="details">
+          <div class="details-header">
+            <p id="type">Index</p>
+            <p id="type">Type</p>
+            <p id="probability">Probability</p>
+          </div>
+
+        </div>
+
+            <script>
+              feather.replace()
+            </script>
+          </div>
+    </script>
+
+    <div class="alert alert-success" role="alert" id="file-process-template">
+      <strong>File(s) under processing!</strong> The server noticed the image and is processing it.
+    </div>
+
+    <script id="alert-toast" type="text/template">
+      <div class="alert alert-error" role="alert">
+        <strong>{{quick}}</strong> {{description}}
+      </div>
+    </script>
+
+    <script id="succsess-toast" type="text/template">
+      <div class="alert alert-error" role="alert">
+        <strong>{{quick}}</strong> {{description}}
+      </div>
+    </script>
+
+    <!-- Image Modal -->
+    <div id="myModal" class="modal">
+      <i class="close" data-feather="x"></i>
+      <div class="img-modal-wrapper">
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="items">
+          <button class="item-round close-menu">
+              <i data-feather="x"></i>
+          </button>
+
+        <a href="index.html" class="item">
+          <i class="home" data-feather="home"></i>
+        </a>
+
+        <div id="sep"></div>
+
+        <a href="files.html" class="item active">
+          <i class="folder" data-feather="folder"></i>
+        </a>
+
+        <div class="item-round">
+          <i class="settings" data-feather="log-out"></i>
+        </div>
+      </div>
+    </nav>
+
+
+      <div class="toolbar">
+
+        <div class="float-left">
+          <button class="menu">
+              <i data-feather="menu"></i>
+          </button>
+          <h4 class="toolbar-header">Analysis reports</h4>
+        </div>
+
+        <div class="float-right" id="index">
+          <div class="profile-info align-middle">
+            <p id="name" class="out-of-focus txt-small"></p>
+            <p id="email" class="out-of-focus txt-small"></p>
+          </div>
+          <img class="profile-image align-middle"></img>
+        </div>
+
+      </div>
+
+      <main>
+        <div class="header-sep">
+          <p class="header">Analysis Results</p>
+        </div>
+
+        <div class="analysis-reports">
+
+        </div>
+      </main>
+
+      <div class="side-actions" id="index">
+        <label type="button" class="btn">
+            <input type="file" class="uploadedFiles"/>
+            Upload an image
+        </label>
+
+        <div class="jumbotron">
+            <h4 class="display-6">Image Analysis</h4>
+            <p class="lead">A clean and simple way to automate your surveilance system.</p>
+            <hr class="my-4">
+            <p>With Pied Piper you can use our REST-Api combined with your surveilance server to get state of the art object detection.</p>
+          </div>
+      </div>
+
+
+      <!-- DOM dependent scripts -->
+      <script>
+        feather.replace()
+      </script>
+
+      <script src="js/firebase/auth-state-handler.js"></script>
+      <script src="js/firebase/database-handler.js"></script>
+      <script src="js/firebase/report-handler.js"></script>
+      <script src="js/firebase/file-handler.js"></script>
+
+      <script>
+        $(function() {
+          $(".uploadedFiles").change(function (){
+            var fileName = $(this).val();
+
+            console.log(fileName);
+            if (fileName) {
+              console.log($(this).prop('files'));
+              uploadFilesToFirebase($(this).prop('files'));
+            }
+          });
+        });
+      </script>
+
+      <script src="js/handlers/click-handler.js"></script>
+  </body>
+</html>
