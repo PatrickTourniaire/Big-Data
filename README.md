@@ -1,3 +1,4 @@
+![](assets/images/logo.png)
 # Big Data - Statistical Analysis from Images
 
 ## Introduction
